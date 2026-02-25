@@ -30,7 +30,7 @@ class I18nManager {
     if (navLang.startsWith("pt")) {
       return "pt-BR";
     }
-    return "en";
+    return "zh-CN";
   }
 
   private loadLocale() {

@@ -18,8 +18,65 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License"></a>
 </p>
 
+---
+
+## 🇨🇳 中文说明
+
+**OpenClaw** 是一款运行在本地设备上的 **个人 AI 助手**。它可以通过你常用的通讯工具（WhatsApp、Telegram、Slack、Discord、Google Chat、Signal、iMessage、Microsoft Teams、**飞书**、WebChat 等）与你交互。支持 macOS/iOS/Android 语音功能，并提供可视化 Canvas 画布。
+
+### 核心特性
+
+- 🏠 **本地优先** — 网关（Gateway）运行在你自己的设备上，数据完全由你掌控
+- 💬 **多频道收发** — 支持飞书、WhatsApp、Telegram、Slack、Discord 等 15+ 通讯平台
+- 🤖 **多代理路由** — 根据频道/账号/对话路由到不同的 AI 代理
+- 🗣️ **语音唤醒** — macOS/iOS/Android 始终在线的语音交互
+- 🛠️ **丰富工具** — 浏览器、Canvas 画布、定时任务、会话管理等
+
+### 快速安装
+
+需要 **Node ≥22**。
+
+```bash
+npm install -g openclaw@latest
+openclaw onboard --install-daemon
+```
+
+### 飞书频道配置
+
+OpenClaw 原生支持 **飞书 (Feishu/Lark)** 作为通讯频道。在初始化引导过程中即可选择飞书：
+
+```bash
+# 方式一：通过引导向导配置（推荐）
+openclaw onboard
+# → 在频道选择步骤中选择 "Feishu/Lark (飞书)"
+
+# 方式二：单独添加飞书频道
+openclaw channels add
+# → 选择 Feishu
+
+# 方式三：安装飞书插件后配置
+openclaw plugins install @openclaw/feishu
+openclaw channels add
+```
+
+配置步骤：
+
+1. 前往 [飞书开放平台](https://open.feishu.cn) 创建自建应用
+2. 获取 App ID 和 App Secret
+3. 启用权限：`im:message`、`im:chat`、`contact:user.base:readonly`
+4. 发布应用或添加到测试群组
+5. 在 `openclaw onboard` 引导中输入凭据
+
+详细文档：[飞书频道配置](https://docs.openclaw.ai/channels/feishu)
+
+### Web UI 中文支持
+
+OpenClaw 的 Web 控制面板已完整支持简体中文。默认将自动检测浏览器语言，也可在「概览」页面的「网关访问」设置中手动切换语言。
+
+---
+
 **OpenClaw** is a _personal AI assistant_ you run on your own devices.
-It answers you on the channels you already use (WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage, Microsoft Teams, WebChat), plus extension channels like BlueBubbles, Matrix, Zalo, and Zalo Personal. It can speak and listen on macOS/iOS/Android, and can render a live Canvas you control. The Gateway is just the control plane — the product is the assistant.
+It answers you on the channels you already use (WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage, Microsoft Teams, Feishu/Lark, WebChat), plus extension channels like BlueBubbles, Matrix, Zalo, and Zalo Personal. It can speak and listen on macOS/iOS/Android, and can render a live Canvas you control. The Gateway is just the control plane — the product is the assistant.
 
 If you want a personal, single-user assistant that feels local, fast, and always-on, this is it.
 
@@ -126,7 +183,7 @@ Run `openclaw doctor` to surface risky/misconfigured DM policies.
 ## Highlights
 
 - **[Local-first Gateway](https://docs.openclaw.ai/gateway)** — single control plane for sessions, channels, tools, and events.
-- **[Multi-channel inbox](https://docs.openclaw.ai/channels)** — WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, BlueBubbles (iMessage), iMessage (legacy), Microsoft Teams, Matrix, Zalo, Zalo Personal, WebChat, macOS, iOS/Android.
+- **[Multi-channel inbox](https://docs.openclaw.ai/channels)** — WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, BlueBubbles (iMessage), iMessage (legacy), Microsoft Teams, Feishu/Lark (飞书), Matrix, Zalo, Zalo Personal, WebChat, macOS, iOS/Android.
 - **[Multi-agent routing](https://docs.openclaw.ai/gateway/configuration)** — route inbound channels/accounts/peers to isolated agents (workspaces + per-agent sessions).
 - **[Voice Wake](https://docs.openclaw.ai/nodes/voicewake) + [Talk Mode](https://docs.openclaw.ai/nodes/talk)** — always-on speech for macOS/iOS/Android with ElevenLabs.
 - **[Live Canvas](https://docs.openclaw.ai/platforms/mac/canvas)** — agent-driven visual workspace with [A2UI](https://docs.openclaw.ai/platforms/mac/canvas#canvas-a2ui).
@@ -150,7 +207,7 @@ Run `openclaw doctor` to surface risky/misconfigured DM policies.
 
 ### Channels
 
-- [Channels](https://docs.openclaw.ai/channels): [WhatsApp](https://docs.openclaw.ai/channels/whatsapp) (Baileys), [Telegram](https://docs.openclaw.ai/channels/telegram) (grammY), [Slack](https://docs.openclaw.ai/channels/slack) (Bolt), [Discord](https://docs.openclaw.ai/channels/discord) (discord.js), [Google Chat](https://docs.openclaw.ai/channels/googlechat) (Chat API), [Signal](https://docs.openclaw.ai/channels/signal) (signal-cli), [BlueBubbles](https://docs.openclaw.ai/channels/bluebubbles) (iMessage, recommended), [iMessage](https://docs.openclaw.ai/channels/imessage) (legacy imsg), [Microsoft Teams](https://docs.openclaw.ai/channels/msteams) (extension), [Matrix](https://docs.openclaw.ai/channels/matrix) (extension), [Zalo](https://docs.openclaw.ai/channels/zalo) (extension), [Zalo Personal](https://docs.openclaw.ai/channels/zalouser) (extension), [WebChat](https://docs.openclaw.ai/web/webchat).
+- [Channels](https://docs.openclaw.ai/channels): [WhatsApp](https://docs.openclaw.ai/channels/whatsapp) (Baileys), [Telegram](https://docs.openclaw.ai/channels/telegram) (grammY), [Slack](https://docs.openclaw.ai/channels/slack) (Bolt), [Discord](https://docs.openclaw.ai/channels/discord) (discord.js), [Google Chat](https://docs.openclaw.ai/channels/googlechat) (Chat API), [Signal](https://docs.openclaw.ai/channels/signal) (signal-cli), [BlueBubbles](https://docs.openclaw.ai/channels/bluebubbles) (iMessage, recommended), [iMessage](https://docs.openclaw.ai/channels/imessage) (legacy imsg), [Microsoft Teams](https://docs.openclaw.ai/channels/msteams) (extension), [Feishu/Lark](https://docs.openclaw.ai/channels/feishu) (飞书, extension), [Matrix](https://docs.openclaw.ai/channels/matrix) (extension), [Zalo](https://docs.openclaw.ai/channels/zalo) (extension), [Zalo Personal](https://docs.openclaw.ai/channels/zalouser) (extension), [WebChat](https://docs.openclaw.ai/web/webchat).
 - [Group routing](https://docs.openclaw.ai/channels/group-messages): mention gating, reply tags, per-channel chunking and routing. Channel rules: [Channels](https://docs.openclaw.ai/channels).
 
 ### Apps + nodes
