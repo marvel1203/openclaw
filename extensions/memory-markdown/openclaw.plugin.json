@@ -1,0 +1,53 @@
+{
+  "id": "memory-markdown",
+  "kind": "memory",
+  "uiHints": {
+    "storageDir": {
+      "label": "Storage Directory",
+      "placeholder": "~/.openclaw/memory/markdown",
+      "help": "Directory for Markdown memory files (human-readable, editable)",
+      "advanced": true
+    },
+    "autoCapture": {
+      "label": "Auto-Capture",
+      "help": "Automatically capture important information from conversations"
+    },
+    "autoRecall": {
+      "label": "Auto-Recall",
+      "help": "Automatically inject relevant memories into context"
+    },
+    "captureMaxChars": {
+      "label": "Capture Max Chars",
+      "help": "Maximum message length eligible for auto-capture",
+      "advanced": true,
+      "placeholder": "500"
+    },
+    "evolutionEnabled": {
+      "label": "Self-Evolution",
+      "help": "Periodically review task logs and extract new execution rules"
+    }
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "storageDir": {
+        "type": "string"
+      },
+      "autoCapture": {
+        "type": "boolean"
+      },
+      "autoRecall": {
+        "type": "boolean"
+      },
+      "captureMaxChars": {
+        "type": "number",
+        "minimum": 100,
+        "maximum": 10000
+      },
+      "evolutionEnabled": {
+        "type": "boolean"
+      }
+    }
+  }
+}
