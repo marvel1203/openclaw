@@ -1,13 +1,5 @@
-import type {
-  ChannelMeta,
-  ChannelPlugin,
-  OpenClawConfig,
-} from "openclaw/plugin-sdk";
-import {
-  buildBaseChannelStatusSummary,
-  DEFAULT_ACCOUNT_ID,
-  PAIRING_APPROVED_MESSAGE,
-} from "openclaw/plugin-sdk";
+import type { ChannelMeta, ChannelPlugin, OpenClawConfig } from "openclaw/plugin-sdk";
+import { buildBaseChannelStatusSummary, DEFAULT_ACCOUNT_ID } from "openclaw/plugin-sdk";
 import { DingTalkConfigSchema } from "./config-schema.js";
 import type { ResolvedDingTalkAccount, DingTalkConfig } from "./types.js";
 
@@ -84,13 +76,10 @@ export const dingtalkPlugin: ChannelPlugin<ResolvedDingTalkAccount> = {
   pairing: {
     idLabel: "dingtalkUserId",
     normalizeAllowEntry: (entry) => entry.replace(/^(dingtalk|ding|user):/i, ""),
-    notifyApproval: async ({ cfg, id }) => {
+    notifyApproval: async ({ cfg: _cfg, id: _id }) => {
       // Approval notification via session webhook requires an active session.
       // The pairing flow sends approval via the reply path after the user
       // sends a pairing request.
-      void cfg;
-      void id;
-      void PAIRING_APPROVED_MESSAGE;
     },
   },
   capabilities: {

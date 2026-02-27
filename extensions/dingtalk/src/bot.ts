@@ -5,16 +5,9 @@ import type { DingTalkMessageEvent, DingTalkSender } from "./types.js";
  * Verify DingTalk webhook signature.
  * DingTalk signs events with: HMAC-SHA256(timestamp + "\n" + secret, secret)
  */
-export function verifyDingTalkSignature(
-  timestamp: string,
-  sign: string,
-  secret: string,
-): boolean {
+export function verifyDingTalkSignature(timestamp: string, sign: string, secret: string): boolean {
   const stringToSign = `${timestamp}\n${secret}`;
-  const expected = crypto
-    .createHmac("sha256", secret)
-    .update(stringToSign)
-    .digest("base64");
+  const expected = crypto.createHmac("sha256", secret).update(stringToSign).digest("base64");
   // Constant-time comparison to prevent timing attacks
   const expectedBuf = Buffer.from(expected);
   const receivedBuf = Buffer.from(decodeURIComponent(sign));
@@ -44,12 +37,12 @@ export function extractMessageText(event: DingTalkMessageEvent): string {
  */
 export function stripBotMention(text: string, botName?: string): string {
   let result = text;
-  // Remove @BotName pattern
+  // Remove @BotName pattern (specific bot name match)
   if (botName) {
     result = result.replace(new RegExp(`^@${botName}\\s*`, "i"), "");
   }
-  // Remove generic @mention pattern at start
-  result = result.replace(/^@[\w\s]+\s+/, "");
+  // Remove generic @mention pattern at start (one non-whitespace word after @)
+  result = result.replace(/^@\S+\s*/, "");
   return result.trim();
 }
 
@@ -57,10 +50,7 @@ export function stripBotMention(text: string, botName?: string): string {
  * Check if the bot is mentioned in a group message.
  * In group chats, DingTalk requires @mention to trigger the bot.
  */
-export function isBotMentioned(
-  event: DingTalkMessageEvent,
-  botUserId: string,
-): boolean {
+export function isBotMentioned(event: DingTalkMessageEvent, botUserId: string): boolean {
   if (!event.atUsers || event.atUsers.length === 0) {
     return false;
   }

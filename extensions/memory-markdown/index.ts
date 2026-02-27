@@ -7,7 +7,6 @@
  *
  * Files:
  *   <storageDir>/memories.md   – general memories by category
- *   <storageDir>/preferences.md – user preferences
  *   <storageDir>/task-log.md   – success/failure task log for evolution
  *   <storageDir>/rules.md      – AI-derived execution rules (evolved over time)
  */
@@ -75,7 +74,10 @@ export const markdownMemoryConfigSchema = {
     const cfg = (value ?? {}) as Record<string, unknown>;
     const captureMaxChars =
       typeof cfg.captureMaxChars === "number" ? Math.floor(cfg.captureMaxChars) : undefined;
-    if (typeof captureMaxChars === "number" && (captureMaxChars < 100 || captureMaxChars > 10_000)) {
+    if (
+      typeof captureMaxChars === "number" &&
+      (captureMaxChars < 100 || captureMaxChars > 10_000)
+    ) {
       throw new Error("captureMaxChars must be between 100 and 10000");
     }
     return {
@@ -92,6 +94,8 @@ export const markdownMemoryConfigSchema = {
 // Prompt injection & capture filters
 // ============================================================================
 
+// Multilingual trigger patterns: English, Czech (cs), and common identifiers.
+// Extend this list to add support for additional languages.
 const MEMORY_TRIGGERS = [
   /zapamatuj si|pamatuj|remember/i,
   /preferuji|radši|nechci|prefer/i,
@@ -295,7 +299,6 @@ export class MarkdownMemoryStore {
     const matchedLines = simpleSearch(content, query, limit);
     const entries: MemoryEntry[] = [];
     for (const line of matchedLines) {
-      const full = content;
       const m = line.match(
         /^-\s+\[([^\]]+)\]\s+\[([^\]]+)\]\s+(.+?)\s*<!--\s*created:(\d+)\s*-->$/,
       );
@@ -310,7 +313,6 @@ export class MarkdownMemoryStore {
         text: text.trim(),
         createdAt: parseInt(ts, 10),
       });
-      void full;
     }
     return entries;
   }
@@ -356,8 +358,7 @@ export class MarkdownMemoryStore {
     const id = randomUUID().slice(0, 8);
     const ts = Date.now();
     const status = entry.success ? "✅ SUCCESS" : "❌ FAILURE";
-    const line =
-      `- [${id}] ${status} ${entry.summary} <!-- created:${ts}${entry.durationMs !== undefined ? ` duration:${entry.durationMs}ms` : ""} -->\n`;
+    const line = `- [${id}] ${status} ${entry.summary} <!-- created:${ts}${entry.durationMs !== undefined ? ` duration:${entry.durationMs}ms` : ""} -->\n`;
     appendFile(this.taskLogPath, line);
   }
 
@@ -376,7 +377,9 @@ export class MarkdownMemoryStore {
     const content = fs.readFileSync(this.rulesPath, "utf8");
     const results: EvolutionRule[] = [];
     for (const line of content.split("\n")) {
-      const m = line.match(/^-\s+\[([^\]]+)\]\s+\[([^\]]+)\]\s+(.+?)\s*<!--\s*created:(\d+)\s*-->$/);
+      const m = line.match(
+        /^-\s+\[([^\]]+)\]\s+\[([^\]]+)\]\s+(.+?)\s*<!--\s*created:(\d+)\s*-->$/,
+      );
       if (!m) continue;
       const [, id, source, rule, ts] = m;
       if (!id || !source || !rule || !ts) continue;
@@ -499,9 +502,7 @@ const memoryMarkdownPlugin = {
             };
           }
 
-          const text = results
-            .map((r, i) => `${i + 1}. [${r.category}] ${r.text}`)
-            .join("\n");
+          const text = results.map((r, i) => `${i + 1}. [${r.category}] ${r.text}`).join("\n");
 
           return {
             content: [{ type: "text", text: `Found ${results.length} memories:\n\n${text}` }],
@@ -599,9 +600,7 @@ const memoryMarkdownPlugin = {
                 details: { action: "deleted", id: results[0].id },
               };
             }
-            const list = results
-              .map((r) => `- [${r.id}] ${r.text.slice(0, 60)}`)
-              .join("\n");
+            const list = results.map((r) => `- [${r.id}] ${r.text.slice(0, 60)}`).join("\n");
             return {
               content: [
                 {
